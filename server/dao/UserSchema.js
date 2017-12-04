@@ -71,6 +71,9 @@ module.exports = function() {
                 opts = { email : passport.email };
             } else if (String(passport.phone).hasValue()) {
                 opts = { phone : passport.phone };
+            } else {
+                var err = Error.create(CODES.DATA_NOT_EXISTED, "no such User");
+                return callBack ? callBack(err) : reject(err);
             }
 
             var fields = "_id pwd username nickname email phone head type status lastLoginTime";

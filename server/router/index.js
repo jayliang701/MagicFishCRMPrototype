@@ -9,7 +9,6 @@ exports.getRouterMap = function() {
     return [
         { url: "/", view: "index", handle: renderIndexPage, needLogin:false },
         { url: "/index", view: "index", handle: renderIndexPage, needLogin:false },
-        { url: "/login", view: "login", handle: renderIndexPage, needLogin:false },
-        { url: "/test", view: "test", handle: renderIndexPage, needLogin:false }
+        { url: "/login", view: "login", handle: renderIndexPage, needLogin:false }
     ];
 }

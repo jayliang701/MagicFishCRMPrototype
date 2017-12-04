@@ -29,10 +29,36 @@
     }
 
     function setup() {
+
         var defaultInitor = {
             el: '.root',
-            delimiters: ['[[', ']]']
+            delimiters: ['[[', ']]'],
+            data:{},
+            methods:{ }
         };
+        if (window.$user) {
+
+            var basicUserOperation = {
+                login:function(account, pwd, code, callBack) {
+                    $callAPI("user.login", { account:account, pwd:pwd, code:code }, function(sess) {
+                        callBack && callBack(null, sess);
+                    }, function(code, msg) {
+                        callBack && callBack(msg);
+                    });
+                }
+            }
+            defaultInitor.methods = Object.assign({}, defaultInitor.methods, basicUserOperation);
+
+            defaultInitor.data.user = Object.assign({}, window.$user);
+            window.$user = undefined;
+            $('body > script[inject=user]').remove();
+        }
+        for (var key in defaultInitor) {
+            var val = defaultInitor[key];
+            if (val && typeof val == 'object') {
+                window.RootModel[key] = Object.assign({}, val, window.RootModel[key]);
+            }
+        }
         window.RootApp = new Vue(Object.assign({}, defaultInitor, window.RootModel));
         console.log('vue app is inited.');
         NProgress.done(true);

@@ -1,6 +1,38 @@
-{% extends 'template/react_base_page.html' %}
+{% extends 'template/vue_base_page.html' %}
 
-{% block footer_import_base_script %}
-{{ super() }}
-<!--<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/views/components/Clock.js"></script>-->
+{% block root_content %}
+<h1>Login Here</h1>
+<div>
+    <div>
+        <input type="text" name="account" v-model="account" >
+    </div>
+    <div>
+        <input type="password" name="pwd" v-model="pwd" >
+    </div>
+    <div>
+        <p v-if="err">[[err]]</p>
+    </div>
+    <div>
+        <button @click="requestLogin()">[[isWorking ? 'Loading...' : 'Login']]</button>
+    </div>
+</div>
 {% endblock %}
+
+<script lang="vue">
+    window.RootModel = {
+        data: {
+            account:'', pwd:'', err:'',
+            isWorking:false
+        },
+        methods: {
+            requestLogin:function() {
+                this.isWorking = true;
+                this.err = '';
+                this.login(this.account, this.pwd, null, function(err, sess) {
+                    this.isWorking = false;
+                    this.err = err;
+                }.bind(this));
+            }
+        }
+    };
+</script>

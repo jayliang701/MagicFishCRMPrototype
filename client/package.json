@@ -1,0 +1,22 @@
+{
+  "name": "MagicFishCRMPrototypeClient",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "gulp --gulpfile gulpfile.js"
+  },
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-less": "^3.3.2",
+    "gulp-notify": "^3.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-watch": "^4.3.11",
+    "mkdirp-sync": "^0.0.2",
+    "run-sequence": "^2.2.0"
+  }
+}

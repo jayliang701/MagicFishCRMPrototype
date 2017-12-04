@@ -4,35 +4,31 @@
 {{ super() }}
 <link rel="stylesheet" href="{{setting.RES_CDN_DOMAIN}}/css/nprogress.css">
 <link rel="stylesheet" href="{{setting.RES_CDN_DOMAIN}}/css/main.css">
-{% endblock %}
-
-{% block head_custom_style %}
-{{ super() }}
-<style>body>.root{display: none;}</style>
+<link rel="stylesheet" href="{{setting.RES_CDN_DOMAIN}}/css/preinit.css">
 {% endblock %}
 
 {% block head_import_script %}
 {{ super() }}
-<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/nprogress.js"></script>
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/preinit.js"></script>
 {% endblock %}
 
 {% block head_custom_script %}
 {{ super() }}
-<script>NProgress.set(0.1);</script>
-{% endblock %}
-
-{% block footer_import_base_script %}
-<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/jquery-3.1.1.min.js"></script>
-<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/vue.js"></script>
-{% block vue_dependency %}
-<!--<vue src="{{setting.RES_CDN_DOMAIN}}/js/app/.js"></vue>-->
-{% endblock %}
-<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/vue-init.js"></script>
 {% endblock %}
 
 {% block body %}
+<script>NProgress.set(0.15);</script>
 <div class="root">
 {% block root_content %}
 {% endblock %}
 </div>
+{% endblock %}
+
+{% block footer_import_base_script %}
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/vendor.js"></script>
+{% block vue_dependency %}
+<!--<vue src="{{setting.RES_CDN_DOMAIN}}/js/app/.js"></vue>-->
+{% endblock %}
+<script inject="user">window.$user={{user|json}};</script>
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/init.js"></script>
 {% endblock %}

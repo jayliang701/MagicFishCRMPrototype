@@ -1,6 +1,24 @@
-{% extends 'template/react_base_page.html' %}
+{% extends 'template/vue_base_page.html' %}
 
-{% block footer_import_base_script %}
-{{ super() }}
-<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/views/components/Clock.js"></script>
+{% block root_content %}
+<h1>[[msg]]</h1>
+<h3>count: [[num]]</h3>
+<input type="text" v-model="msg"/> <button @click="counting()">Click</button>
 {% endblock %}
+
+<script lang="vue">
+    window.RootModel = {
+        data: {
+            msg:'Hello World',
+            num:0
+        },
+        methods: {
+            counting: function() {
+                this.num ++;
+            }
+        }
+    };
+    setTimeout(function () {
+        RootModel.data.num += 10;
+    }, 2000);
+</script>
