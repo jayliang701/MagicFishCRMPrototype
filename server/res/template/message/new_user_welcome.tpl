@@ -1,0 +1,3 @@
+Welcome
+**********%*********
+Dear %nickname%, welcome!

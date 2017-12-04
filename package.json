@@ -1,0 +1,13 @@
+{
+  "name": "MagicFishCRMPrototype",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jayliang701/MagicFishCRMPrototype.git",
+  "author": "jayliang701 <156070304@qq.com>",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+
+  },
+  "license": "MIT"
+}

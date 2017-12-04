@@ -1,0 +1,6 @@
+{% extends 'template/react_base_page.html' %}
+
+{% block footer_import_base_script %}
+{{ super() }}
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/views/components/Clock.js"></script>
+{% endblock %}

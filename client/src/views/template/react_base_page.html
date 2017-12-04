@@ -1,0 +1,15 @@
+{% extends './common_page.html' %}
+
+{% block head_import_style %}
+{{ super() }}
+<link rel="stylesheet" href="{{setting.RES_CDN_DOMAIN}}/css/main.css">
+{% endblock %}
+
+{% block footer_import_base_script %}
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/vendor.js"></script>
+{% endblock %}
+
+{% block body %}
+<div id="root"></div>
+{% endblock %}
