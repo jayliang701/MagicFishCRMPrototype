@@ -101,7 +101,7 @@ function buildLess(entry, target, done) {
     stream.pipe(plumber())
         .pipe(less())
         .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
+            browsers: ['last 50 versions', 'ie >= 9'],
             cascade: false
         }))
         .pipe(gulp.dest(`${DIST_RES_PATH}/css`));
@@ -113,7 +113,7 @@ function buildMainLess(entry) {
     stream.pipe(plumber())
         .pipe(less())
         .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
+            browsers: ['last 50 versions', 'ie >= 9'],
             cascade: false
         }))
         .pipe(gulp.dest(`${DIST_RES_PATH}/css`));
