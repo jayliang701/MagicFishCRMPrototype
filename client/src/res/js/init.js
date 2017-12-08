@@ -31,10 +31,31 @@
     function setup() {
 
         var defaultInitor = {
-            el: '.root',
+            el: '#main',
             delimiters: ['[[', ']]'],
             data:{},
-            methods:{ }
+            methods:{
+                inited:function(){}
+            },
+            mounted: function () {
+                console.log('vue is inited.');
+                var app = this;
+                NProgress.set(0.95);
+                $(function() {
+                    var next = function() {
+                        console.log('app is ready.');
+                        NProgress.done(true);
+                        app.inited();
+                        window.$inited && window.$inited();
+                        $('body > #main').css('display', 'block');
+                    }
+                    if (window.$preinited) {
+                        window.$preinited(next);
+                    } else {
+                        next();
+                    }
+                });
+            }
         };
         if (window.$user) {
 
@@ -59,10 +80,8 @@
                 window.RootModel[key] = Object.assign({}, val, window.RootModel[key]);
             }
         }
+        NProgress.set(0.90);
         window.RootApp = new Vue(Object.assign({}, defaultInitor, window.RootModel));
-        console.log('vue app is inited.');
-        NProgress.done(true);
-        $('body > .root').css('display', 'block');
     }
 
     loadDependency();

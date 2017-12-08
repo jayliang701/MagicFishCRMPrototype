@@ -1,6 +1,6 @@
-{% extends 'template/vue_base_page.html' %}
+{% extends 'template/layout_base_page.html' %}
 
-{% block root_content %}
+{% block body_content_in_main_content %}
 <h1>[[msg]]</h1>
 <h3>count: [[num]]</h3>
 <input type="text" v-model="msg"/> <button @click="counting()">Click</button>

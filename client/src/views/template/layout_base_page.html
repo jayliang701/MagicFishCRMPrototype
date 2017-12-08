@@ -1,0 +1,186 @@
+{% extends './vue_base_page.html' %}
+
+{% block body %}
+<div id="main">
+{% block root_content %}
+    <!-- Header -->
+    {% block header %}
+    <header class="navbar navbar-lg bg-light navbar-fixed-top">
+        {% block header_content %}
+
+        {% block header_left %}
+        <!-- Navbar Branding -->
+        <div class="navbar-branding">
+            <a class="navbar-brand" href="dashboard.html">
+                <img src="{{setting.RES_CDN_DOMAIN}}/img/logos/logo.png" class="img-responsive-disabled" height="32" width="32" alt="logo">
+                <b>MF</b>Admin
+            </a>
+            <a class="menu-toggle-btn" data-menu-toggle="sidebar_left" href="#">
+                <i class="ad ad-lines"></i>
+            </a>
+        </div>
+        {% endblock %}
+
+        {% block header_right %}
+        <!-- Navbar Right Menu Container -->
+        <ul class="nav navbar-nav navbar-right">
+
+            <li class="navbar-link dropdown">
+                <div class="navbar-btn btn-group user-menu">
+                    <button class="btn btn-sm dropdown-toggle" data-toggle="dropdown" type="button">
+                        <span class="caret caret-lg mr5"></span>
+                        <span class="glyphicon glyphicon-user"></span>
+                    </button>
+                    <ul class="dropdown-menu list-group dropdown-persist animated animated-shorter fadeIn" role="menu">
+                        <li class="list-group-item">
+                            <a href="#" class="">
+                                <span class="fa fa-user fs15"></span> Account </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="#" class="">
+                                <span class="fa fa-gear fs15"></span> Settings </a>
+                        </li>
+                        <li class="dropdown-footer">
+                            <a href="#" class="">
+                                <span class="fa fa-power-off"></span> Logout </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+        </ul>
+        {% endblock %}
+        {% endblock %}
+    </header>
+    <!-- End: Header -->
+    {% endblock %}
+
+    {% block left_side %}
+    <aside id="sidebar_left" class="sidebar sidebar-light has-scrollbar">
+        {% block left_side_content %}
+
+        <!-- Start: Sidebar Left Content -->
+        <div class="sidebar-content" tabindex="0" style="right: -17px;">
+
+            <!-- Start: Sidebar Header -->
+            <header class="sidebar-header">
+
+                <!-- Sidebar Widget - Author (hidden)  -->
+                <div class="sidebar-widget author-widget author-widget-square author-widget-fill">
+                    <div class="media">
+                        <a class="media-left" href="#">
+                            <img src="{{setting.RES_CDN_DOMAIN}}/img/empty_head.png" class="" alt="avatar" width="36" height="36">
+                        </a>
+                        <div class="media-body">
+                            <div class="media-links">
+                                <a href="#" class="sidebar-menu-toggle">User Menu -</a>
+                                <a href="pages_login(alt).html">Logout</a>
+                            </div>
+                            <div class="media-author">Michael Richards</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Widget -->
+                <div class="sidebar-widget search-widget search-widget-light">
+                    <div class="form-group mbn">
+                            <span class="append-icon left">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        <input type="text" class="form-control" id="sidebarSearch" placeholder="Search...">
+                    </div>
+                </div>
+
+            </header>
+            <!-- End: Sidebar Header -->
+
+            <!-- Start: Sidebar Left Menu -->
+            <ul class="nav sidebar-menu sidebar-menu-border">
+                <li class="sidebar-label pt20 hidden">Menu</li>
+                <li class="active">
+                    <a href="dashboard.html">
+                        <span class="glyphicon glyphicon-home"></span>
+                        <span class="sidebar-title">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="pages_calendar.html">
+                        <span class="fa fa-calendar"></span>
+                        <span class="sidebar-title">Calendar</span>
+                        <span class="sidebar-title-tray">
+                            <span class="label label-xs bg-default hidden">New</span>
+                        </span>
+                    </a>
+                </li>
+
+                <li class="sidebar-label pt15">Exclusive Tools</li>
+                <li>
+                    <a class="accordion-toggle" href="#">
+                        <span class="glyphicon glyphicon-fire"></span>
+                        <span class="sidebar-title">Exclusive Plugins</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="nav sub-nav">
+                        <li>
+                            <a href="classic_plugins-panels.html">
+                                <span class="glyphicon glyphicon-book"></span> Data Panels </a>
+                        </li>
+                        <li>
+                            <a href="classic_plugins-modals.html">
+                                <span class="glyphicon glyphicon-modal-window"></span> Advanced Modals </a>
+                        </li>
+                        <li>
+                            <a href="classic_plugins-dock.html">
+                                <span class="glyphicon glyphicon-equalizer"></span> Content Dock </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+            <!-- End: Sidebar Menu -->
+
+            {% endblock %}
+        </div>
+        <!-- End: Sidebar Left Content -->
+    </aside>
+    {% endblock %}
+
+    <section id="content_wrapper">
+    {% block main_content %}
+        {% block header_in_main_content %}
+        {% endblock %}
+        {% block body_in_main_content %}
+        <section id="content">
+            {% block body_content_in_main_content %}
+            <!-- begin: .tray-left -->
+            <aside class="tray tray-left">
+                <div class="tray-demo-styles">
+                    <h4> Left Content Goes Here </h4>
+                    <hr class="alt short">
+                    <p class="text-muted"> Lorem ipsum dolor sit amet, is nisi ut aliquip ex ea commodo consectetur adipi sicing elit, sed do eiusmod tempor incididu ut labore et is nisi ut aliquip ex ea commodo. </p>
+                </div>
+            </aside>
+            <!-- end: .tray-left -->
+
+            <!-- begin: .tray-center -->
+            <div class="tray tray-center">
+                <div class="tray-demo-styles">
+                    <h4> Center Content Goes Here </h4>
+                    <hr class="alt short">
+                    <p class="text-muted"> Lorem ipsum dolor sit amet, is nisi ut aliquip ex ea commodo consectetur adipi sicing elit, sed do eiusmod tempor incididu ut labore et is nisi ut aliquip ex ea commodo dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exetation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p class="text-muted mt20"> Lorem ipsum dolor sit amet, is nisi ut aliquip ex ea commodo consectetur adipi sicing elit, sed do eiusmod tempor incididu ut labore et is nisi ut aliquip ex ea m ad minim veniam, quis nostrud exetation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+            </div>
+            <!-- end: .tray center -->
+            {% endblock %}
+        </section>
+        {% endblock %}
+    {% endblock %}
+    </section>
+{% endblock %}
+</div>
+{% endblock %}
+
+{% block footer_import_base_script %}
+{{ super() }}
+{% endblock %}

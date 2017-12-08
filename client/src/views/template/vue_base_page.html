@@ -1,4 +1,4 @@
-{% extends './common_page.html' %}
+{% extends './admin_template_page.html' %}
 
 {% block head_import_style %}
 {{ super() }}
@@ -9,7 +9,6 @@
 
 {% block head_import_script %}
 {{ super() }}
-<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/preinit.js"></script>
 {% endblock %}
 
 {% block head_custom_script %}
@@ -25,7 +24,10 @@
 {% endblock %}
 
 {% block footer_import_base_script %}
-<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/vendor.js"></script>
+{{ super() }}
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/vue.js"></script>
+{% block footer_import_vue_component_script %}
+{% endblock %}
 {% block vue_dependency %}
 <!--<vue src="{{setting.RES_CDN_DOMAIN}}/js/app/.js"></vue>-->
 {% endblock %}

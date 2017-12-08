@@ -7,7 +7,9 @@ exports.config = {
     enabled: true,
     security: {
         //@login 账户登录 @account 账号 @pwd 密码 @code 验证码
-        "login":{ needLogin:false, checkParams:{ account:"string", pwd:"string" }, optional:{ code:"string" } }
+        "login":{ needLogin:false, checkParams:{ account:"string", pwd:"string" }, optional:{ code:"string" } },
+        //@checkPhoneExist 检查使用某个手机号的账户是否存在 @phone 手机号
+        "checkPhoneExist":{ needLogin:false, checkParams:{ phone:"string" } }
     }
 };
 
@@ -29,7 +31,6 @@ exports.login = async function(req, res, params) {
         passport.username = account;
     }
     try {
-        console.log(passport);
         var user = await User.login(passport);
 
         user = user.toObject();
@@ -46,6 +47,19 @@ exports.login = async function(req, res, params) {
     }
 
     res.sayOK(sess);
+}
+
+exports.checkPhoneExist = async function(req, res, params, user) {
+    var result = { exists:0 };
+    try {
+        var uobj = await User.findOne({ phone:params.phone }, "_id");
+        if (uobj) result.exists = 1;
+    } catch (err) {
+        return res.sayError(err);
+    }
+    setTimeout(function () {
+        res.sayOK(result);
+    }, 5000);
 }
 
 

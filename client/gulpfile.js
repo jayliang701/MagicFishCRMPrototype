@@ -17,15 +17,38 @@ var gulp = require("gulp"),
 var SRC_PATH = './src';
 var SRC_RES_PATH = `${SRC_PATH}/res`;
 var SRC_VIEW_PATH = `${SRC_PATH}/views`;
+var SRC_TEMPLATE_PATH = `${SRC_RES_PATH}/template`;
 var SRC_ENTRY_PATH = `${SRC_RES_PATH}/js/app`;
 var DIST_PATH = './dist';
 var DIST_RES_PATH = `${DIST_PATH}/res`;
 var DIST_VIEW_PATH = `${DIST_PATH}/views`;
+var DIST_TEMPLATE_PATH = `${DIST_RES_PATH}/template`;
 var DIST_ENTRY_PATH = `${DIST_RES_PATH}/js/app`;
 
 const preinit = ['nprogress.js'];
-const vendors = ['jquery-3.1.1.min.js','jquery.cookie.js','moment.js','md5.js','vue.js', 'utils.js'];
-var excludeJS = [`${SRC_RES_PATH}/js/vue.min.js`];
+const vendors = [
+    'jquery-3.1.1.js',
+    `${SRC_TEMPLATE_PATH}/vendor/jquery/jquery_ui/jquery-ui.js`,
+    `${SRC_TEMPLATE_PATH}/assets/js/utility/utility.js`,
+    'jquery.cookie.js',
+    'jquery-custom.js',
+    'moment.js','md5.js', 'utils.js',
+    //,'vue.js',
+    `${SRC_TEMPLATE_PATH}/assets/js/main.js`,
+    `${SRC_TEMPLATE_PATH}/assets/js/run.js`
+];
+
+const validator = [
+    `${SRC_TEMPLATE_PATH}/assets/admin-tools/admin-forms/js/jquery.validate.js`,
+    `${SRC_TEMPLATE_PATH}/assets/admin-tools/admin-forms/js/additional-methods.min.js`,
+    `${SRC_RES_PATH}/js/validator.js`
+];
+
+const pluginStyles = [
+    //`${SRC_TEMPLATE_PATH}/vendor/plugins/ladda/ladda.min.css`
+];
+
+var excludeJS = [/* `${SRC_RES_PATH}/js/validator.js` */];
 var excludeLess = [`${SRC_RES_PATH}/less/global.less`];
 var lessDependencies = {};
 
@@ -42,21 +65,49 @@ gulp.task('build-perinit', function() {
         .pipe(gulp.dest(`${DIST_RES_PATH}/js`));
 });
 
-gulp.task('build-vendor', function() {
-    vendors.forEach(function(file, index) {
-        vendors[index] = `${SRC_RES_PATH}/js/vendor/${file}`;
-    });
-    return gulp.src(vendors)
-        .pipe(concat('vendor.js'))
-        .pipe(gulp.dest(`${DIST_RES_PATH}/js`));
+gulp.task('build-plugin-style', function() {
+    return concatFiles(pluginStyles, 'plugin.css', `${DIST_RES_PATH}/css`);
 });
 
-function buildJS(entry) {
+gulp.task('build-vendor', function() {
+    vendors.forEach(function(file, index) {
+        if (file.indexOf('./') != 0) {
+            vendors[index] = `${SRC_RES_PATH}/js/vendor/${file}`;
+        }
+    });
+    return concatFiles(vendors, 'vendor.js', `${DIST_RES_PATH}/js`);
+});
+
+function concatFiles(files, outputFilename, outputFolder) {
+    return gulp.src(files)
+        .pipe(concat(outputFilename))
+        .pipe(gulp.dest(outputFolder));
+}
+
+function buildVueComponent(entry, target) {
+    var stream = gulp.src(entry, { base:SRC_PATH });
+    stream = stream.pipe(replace('Vue.component', 'opt.delimiters=[\'[[\', \']]\'];Vue.component'));
+    stream = stream.pipe(gulp.dest(`${DIST_PATH}`));
+    return stream;
+}
+
+function buildJS(entry, target) {
+    if (entry.indexOf('validator.js') >= 0) {
+        return concatFiles(validator, 'validator.js', `${DIST_RES_PATH}/js`);
+    } else if (entry.indexOf('/js/component/') >= 0 || entry.indexOf('\\js\\component\\') >= 0) {
+        return buildVueComponent(entry, target);
+    }
     var stream = gulp.src(entry, { base:SRC_PATH }).pipe(gulp.dest(`${DIST_PATH}`));
     return stream;
 }
 
 function buildCSS(entry, target) {
+    var stream = gulp.src(entry, { base:SRC_PATH });
+    stream.pipe(gulp.dest(`${DIST_PATH}`));
+    return stream;
+}
+
+function buildImg(entry, target) {
     var stream = gulp.src(entry, { base:SRC_PATH });
     stream.pipe(gulp.dest(`${DIST_PATH}`));
     return stream;
@@ -123,15 +174,16 @@ function buildMainLess(entry) {
 function buildHtml(entry, target) {
     var stream = gulp.src(entry, { base:SRC_PATH });
     var html = target.contents.toString();
-    if (html.indexOf('template/vue_base_page.html') > 0) {
+    if (html.indexOf('script lang="vue"') > 0) {
         var startTime = Date.now();
         var filename = fetchFilename(entry);
         filename = filename.replace('.html', '');
         var HEAD = '<script lang="vue">';
         var END = '</script>';
         var headIndex = html.indexOf(HEAD);
-        var endIndex = html.indexOf(END);
+        var endIndex = html.lastIndexOf(END);
         var code = html.substring(headIndex + HEAD.length, endIndex);
+        code = `${code}`;
         var codeOutput = path.join(DIST_ENTRY_PATH, entry.replace(path.join(__dirname, SRC_VIEW_PATH), ''));
         codeOutput = path.join(__dirname, codeOutput).replace('.html', '.vue.js');
         mkdirp(path.dirname(codeOutput));
@@ -189,6 +241,27 @@ gulp.task('build', function () {
         var stream = buildCSS(entry, target);
         fileChanged(entry, stream, startTime);
     });
+    //build img
+    watch([
+        `${SRC_RES_PATH}/img/**/*`
+    ], { ignoreInitial:false }, function(target) {
+        var entry = target.path;
+        var startTime = Date.now();
+
+        var stream = buildImg(entry, target);
+        fileChanged(entry, stream, startTime);
+    });
+    //build template
+    watch([
+        `${SRC_RES_PATH}/template/**/*`
+    ], { ignoreInitial:false }, function(target) {
+        var entry = target.path;
+        var startTime = Date.now();
+
+        var stream = gulp.src(entry, { base:SRC_PATH });
+        stream.pipe(gulp.dest(`${DIST_PATH}`));
+        fileChanged(entry, stream, startTime);
+    });
     //build less
     watch([
         `${SRC_RES_PATH}/less/**/*.less`//, `!${SRC_RES_PATH}/less/include/**/*.less`
@@ -212,5 +285,5 @@ gulp.task('build', function () {
 });
 
 gulp.task('default', function(done) {
-    seq('build-perinit', 'build-vendor', 'build', done);
+    seq(/* 'build-plugin-style', */'build-perinit', 'build-vendor', 'build', done);
 });

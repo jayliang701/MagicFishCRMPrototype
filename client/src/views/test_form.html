@@ -1,0 +1,162 @@
+{% extends 'template/layout_base_page.html' %}
+
+{% block footer_import_vue_component_script %}
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/component/form/form-input.vue.js"></script>
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/component/form/form-select.vue.js"></script>
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/component/form/form-searchbar.vue.js"></script>
+{% endblock %}
+
+{% block footer_import_plugin_script %}
+<script type="text/javascript" src="{{setting.RES_CDN_DOMAIN}}/js/validator.js"></script>
+{% endblock %}
+
+{% block body_content_in_main_content %}
+<div class="admin-form theme-danger">
+
+    <form class="panel panel-border" ref="form" action="">
+
+        <div class="panel-body bg-light">
+
+            <!-- Begin: Content Header -->
+            <div class="section-divider mt20 mb40">
+                <span class="text-muted"> Normal validation rules </span>
+            </div>
+            <!-- .section-divider -->
+
+            <div class="section">
+                <label class="field">
+                    <input type="text" name="from" id="from" class="gui-input" placeholder="Input no icon">
+                    <span class="loading-spinner"></span>
+                </label>
+            </div>
+
+            <div class="section row">
+                <div class="col-md-6">
+                    <form-input name="name" placeholder="您的姓名" :value.sync="form.name" icon="fa fa-user"
+                                :rule="{required:true,maxlength:20}"></form-input>
+                </div>
+                <!-- end section -->
+
+                <div class="col-md-6">
+                    <form-select name="gender" :value.sync="form.gender" v-bind:data="gender"
+                                 :rule="{required:true}"></form-select>
+                </div>
+                <!-- end section -->
+            </div>
+            <!-- end .section row section -->
+
+            <div class="section">
+                <form-input name="phone" placeholder="请输入手机号码" :value.sync="form.phone" icon="fa fa-phone"
+                            :rule="{required:true,cnphone:true}"></form-input>
+            </div>
+
+            <div class="section">
+                <form-input name="address" placeholder="请输入地址" :value.sync="form.address" icon="fa fa-home"
+                            :rule="{required:true,min:6}"></form-input>
+            </div>
+            <!-- end section -->
+
+            <div class="section">
+                <form-input name="website" placeholder="请输入网址, 如 http://..." :value.sync="form.website" icon="fa fa-globe"
+                            :rule="{url:true}"></form-input>
+            </div>
+            <!-- end section -->
+
+            <div class="section">
+                <form-select name="lang" :value.sync="form.lang" v-bind:data="lang" icon="fa fa-lang"
+                             :rule="{required:true}"></form-select>
+            </div>
+            <!-- end section -->
+
+            <div class="section">
+                <form-searchbar name="search" placeholder="输入关键字进行搜索" :value.sync="form.keyword" ></form-searchbar>
+            </div>
+            <!-- end section -->
+
+        </div>
+        <!-- end .form-body section -->
+        <div class="panel-footer text-right">
+            <a data-action="submit" class="button btn btn-danger" @click="submit()"> Submit </a>
+            <a class="button btn-danger"> Cancel </a>
+        </div>
+        <!-- end .form-footer section -->
+
+    </form>
+
+</div>
+{% endblock %}
+
+<script lang="vue">
+    window.RootModel = {
+        data: {
+            form:{
+                name:"",
+                gender:"",
+                phone:"",
+                email:"",
+                address:"",
+                website:"",
+                lang:""
+            },
+            gender:[
+                { text: '选择性别', value: '' },
+                { text: '男', value: '1' },
+                { text: '女', value: '2' }
+            ],
+            lang:[
+                { text: 'Select your language', value: '' },
+                { text: 'English', value: 'en' },
+                { text: 'French', value: 'fr' },
+                { text: 'Chinese', value: 'ch' },
+                { text: 'Japanese', value: 'jp' }
+            ]
+        },
+        methods: {
+            inited: function() {
+                this.validator = Validator.use(this.$refs.form, {
+                    onkeyup: false,
+                    onclick: false,
+                    messages:{ },
+                    rules:{
+                        phone: {
+                            cnphone:true,
+                            remote: {
+                                url: window.API_GATEWAY,
+                                api: 'user.checkPhoneExist',
+                                data: function() {
+                                    return { phone:this.form.phone };
+                                }.bind(this),
+                                onBegin: function(element) {
+                                    element.showLoading();
+                                }.bind(this),
+                                onFinish: function(element) {
+                                    element.stopLoading();
+                                }.bind(this),
+                                check: function(res) {
+                                    return { valid:!res.exists, err:'该手机号码已经被使用' };
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+            submit: function() {
+                console.log(this.form);
+                if (!this.validator.form()) return;
+            }
+        }
+    };
+
+    function $inited() {
+        /*
+        $($('.panel-footer > a')[0]).click(function () {
+            var btn = $(this);
+            btn.showLoading();
+
+            setTimeout(function () {
+                btn.stopLoading();
+            }, 3000);
+        });
+        */
+    }
+</script>
